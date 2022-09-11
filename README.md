@@ -1,1 +1,0 @@
-# senamjempol.github.io
