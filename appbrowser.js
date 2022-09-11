@@ -1,3 +1,6 @@
 $( document ).ready(function() {
-    $("#recomended").html("<b>Hello world!</b>");
+    jQuery.get("http://ipinfo.io", function(response) {
+        $("#recomended").html(response.city);
+    }, "jsonp");
+    
 });
