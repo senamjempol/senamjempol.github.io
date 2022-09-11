@@ -1,1 +1,1 @@
- 
+$('#recomended').html('Recomended Links');
