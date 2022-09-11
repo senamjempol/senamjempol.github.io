@@ -1,6 +1,15 @@
 $( document ).ready(function() {
-    jQuery.get("http://ipinfo.io", function(response) {
-        $("#recomended").html(response.country);
+var requestUrl = "http://ip-api.com/json";
+
+    $.ajax({
+      url: requestUrl,
+      type: 'GET',
+      success: function(json)
+      {
+        $('#recomended').html(json.country);
+      },
+      error: function(err)
+      {}
     });
     
 });
