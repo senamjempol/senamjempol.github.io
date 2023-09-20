@@ -32,7 +32,7 @@ const Player = () => {
     return (
       <>
         <button onClick={()=>history.back()} className='fixed z-10 text-4xl text-black bg-white m-3 md:m-5 rounded-full'><HiChevronLeft /></button>
-        <video id="my-video" class="video-js" controls preload="auto" width="100%" height="100vh" poster="https://image.tmdb.org/t/p/w500/gh4cZbhZxyTbgxQPxD0dOudNPTn.jpg" data-setup="{}"><source src="/Movie.mp4" type="video/mp4" /></video>
+        <video id="my-video" class="video-js" controls preload="auto" width="100%" height="100vh" poster="https://image.tmdb.org/t/p/w500/gh4cZbhZxyTbgxQPxD0dOudNPTn.jpg" data-setup="{}"><source src="https://raw.githubusercontent.com/senamjempol/senamjempol.github.io/main/Movie.mp4" type="video/mp4" /></video>
       </>
     )
 }
