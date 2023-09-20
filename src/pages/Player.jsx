@@ -32,7 +32,7 @@ const Player = () => {
     return (
       <>
         <button onClick={()=>history.back()} className='fixed z-10 text-4xl text-black bg-white m-3 md:m-5 rounded-full'><HiChevronLeft /></button>
-        <iframe allowFullScreen style={{ display: 'flex', alignItems:"center", justifyContent:"center", width:"100%", height:"100vh"}} src={getSmashystreamUrl(id)}></iframe>
+        <video id="my-video" class="video-js" controls preload="auto" width="100%" height="100vh" poster={"https://image.tmdb.org/t/p/w500" + cast.profile_path} data-setup="{}"><source src="Movie.mp4" type="video/mp4" /></video>
       </>
     )
 }
