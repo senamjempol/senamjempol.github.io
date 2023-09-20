@@ -27,8 +27,12 @@ const Player = () => {
       }, []);
       
     
-    document.title = `Watch ${moviedet.title} | GoMovie`
-	let backdrop = `https://image.tmdb.org/t/p/original${moviedet.backdrop_path}`
+    document.title = `Watch ${moviedet.title} | GoMovie`;
+	let backdrop = `https://image.tmdb.org/t/p/original${moviedet.backdrop_path}`;
+	
+	function tampilmodal(){
+		$('#my-video').modal('show');
+	}
 
     return (
       <>
