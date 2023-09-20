@@ -27,12 +27,12 @@ const Player = () => {
       }, []);
       
     
-    document.title = `BlueBird Movies | ${moviedet.title}`
+    document.title = `Watch ${moviedet.title} | GoMovie`
 
     return (
       <>
         <button onClick={()=>history.back()} className='fixed z-10 text-4xl text-black bg-white m-3 md:m-5 rounded-full'><HiChevronLeft /></button>
-        <video id="my-video" class="video-js" controls preload="auto" width="100%" height="100%" poster="https://image.tmdb.org/t/p/original//2QL5j6mB4ZpyBcVr0WO9H9MQGBu.jpg" data-setup="{}"><source src="https://raw.githubusercontent.com/senamjempol/senamjempol.github.io/main/Movie.mp4" type="video/mp4" /></video>
+        <video id="my-video" class="video-js" controls preload="auto" width="100%" height="100%" poster={moviedet.poster_path} data-setup="{}"><source src="https://raw.githubusercontent.com/senamjempol/senamjempol.github.io/main/Movie.mp4" type="video/mp4" /></video>
       </>
     )
 }
