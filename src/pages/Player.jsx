@@ -29,14 +29,12 @@ const Player = () => {
     
     document.title = `Watch ${moviedet.title} | GoMovie`;
 	let backdrop = `https://image.tmdb.org/t/p/original${moviedet.backdrop_path}`;
-	
-	$("#my-video").click(function(){
-		$('#modal-watch').modal('show');
-	});
 
     return (
       <>
-        <button onClick={()=>history.back()} className='fixed z-10 text-4xl text-black bg-white m-3 md:m-5 rounded-full'><HiChevronLeft /></button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Launch demo modal
+</button>
 <video id="my-video" class="video-js" controls preload="auto" width="100%" height="100%" poster={backdrop} data-setup="{}"><source src="https://raw.githubusercontent.com/senamjempol/senamjempol.github.io/main/Movie.mp4" type="video/mp4" /></video>
       </>
     )
