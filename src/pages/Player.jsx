@@ -31,7 +31,7 @@ const Player = () => {
 	let backdrop = `https://image.tmdb.org/t/p/original${moviedet.backdrop_path}`;
 	
 	$("#my-video").click(function(){
-		alert("The paragraph was clicked.");
+		$('#modal-watch').modal('show');
 	});
 
     return (
