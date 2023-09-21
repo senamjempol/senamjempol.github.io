@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="EN-US">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title></title>
+      <meta name="description" content="">
+      <meta name="keywords" content="saving the world, magic, ninja fighter, alternate dimension, shaolin monk, based on video game, martial arts tournament, gods, hand to hand combat">
+      <!--<script src="//use.fontawesome.com/3db27005e3.js"></script>
+      <link href="//use.fontawesome.com/3db27005e3.css" media="all" rel="stylesheet">-->
+      <link rel="stylesheet" href="themes/v1/assets/styles.css">
+      <script src="themes/v1/assets/scripts.js"></script>
+      <meta name="theme-color" content="#161c23">
+      <script>
+         $( document ).ready(function() {
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const id = urlParams.get('id');
+         	var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
+         	var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
+         	var infoURL =
+         	  "https://api.themoviedb.org/3/movie/" +
+         	  id +
+         	  "?&api_key=6b4357c41d9c606e4d7ebe2f4a8850ea";
+         	  
+         	$.getJSON(infoURL, function (data) {
+         		var release = data.release_date;
+         		var runtime = data.runtime;
+         		var tagline = data.tagline;
+         		var year = data.release_date.slice(0, 4);
+         		var title = data.title;
+         		var rating = data.vote_average;
+         		var user = data.vote_count;
+         		var overview = data.overview;
+         		var poster = posterPaths + data.poster_path;
+         		var backdrop = backgroundPaths + data.backdrop_path;
+         		
+         		if (data.genres.length > 3) {
+         		genre =
+         		  data.genres[0].name +
+         		  ", " +
+         		  data.genres[1].name +
+         		  ", " +
+         		  data.genres[2].name +
+         		  ", " +
+         		  data.genres[3].name;
+         	  } else if (data.genres.length > 2) {
+         		genre =
+         		  data.genres[0].name +
+         		  ", " +
+         		  data.genres[1].name +
+         		  ", " +
+         		  data.genres[2].name;
+         	  } else if (data.genres.length > 1) {
+         		genre = data.genres[0].name + ", " + data.genres[1].name;
+         	  } else {
+         		genre = data.genres[0].name;
+         	  }
+         	  $('title').html(title);
+         	  $(".backdrop").css("background-image", "url(" + backdrop + "?resize=300,450)");
+         	  $(".vjs-poster").css("background-image", "url(" + backdrop + ")");
+				$('a#aff').each(function() {
+					$(this).attr("href","loading.html");
+				});
+         	  $("h1.h2").html(title+"<span class=\"tiny text-muted\">"+year+"</span>");
+         	  $("#rating").html(rating+"/10");
+         	  $("#user").html("by "+user+" users");
+         	  $(".overview").html(overview);
+         	  $(".release").html(release);
+         	  $(".runtime").html(runtime+" minutes");
+         	  $(".genre").html(genre);
+         	  $(".star").html(release);
+         	  $(".director").html(release);
+         	})
+         })
+      </script>
+   </head>
+   <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/google-play-movies-tv-2038775-1721662.png">
+   <body>
+      <div class="sign-in-overlay"></div>
+      <div class="signin js-signin-form">
+         <div class="signin_close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+         </div>
+         <div class="signin_holder">
+            <form id="signinfrom">
+               <div class="h3">Sign In</div>
+               <div class="form-group">
+                  <label for="signInEmail">Email</label>
+                  <input type="email" class="form-control bg-dark border-dark text-secondary" id="signInEmail"
+                     aria-describedby="emailHelp" placeholder="Enter Email">
+                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+               </div>
+               <div class="form-group">
+                  <label for="signPassword">Password</label>
+                  <input type="password" class="form-control bg-dark border-dark text-secondary" id="signPassword"
+                     placeholder="Password">
+               </div>
+               <div class="form-group">
+                  <label id="forgotpass" class="form-check-label small text-muted cursor text-hover-theme"
+                     for="exampleCheck1">Forgot Password?</label>
+               </div>
+               <div class="d-flex justify-content-center">
+                  <div class="spinner-border text-light loading_signIn text-center mb-3 d-none" role="status">
+                     <span class="sr-only">Loading...</span>
+                  </div>
+               </div>
+               <div class="text-danger sign-in-form-alert mb-3" role="alert"></div>
+               <button type="submit" class="btn btn-outline-theme btn-block sign-in-submit">Sign In</button>
+               <div class="divider divider--small"></div>
+               <div class="text-center">
+                  <p class="text-small mb-3">Or</p>
+                  <a href="loading" class="btn btn-theme btn-block" type="button">Create Free Account</a>
+               </div>
+            </form>
+            <form id="resetpassform">
+               <div class="h3">Reset Password</div>
+               <p class="text-muted">Enter your email address and we'll send you a link to reset your password.
+               </p>
+               <div class="form-group">
+                  <label for="resetEmail">Email</label>
+                  <input type="email" class="form-control bg-dark border-dark text-secondary" id="resetEmail"
+                     aria-describedby="emailHelp" placeholder="Enter Email">
+               </div>
+               <div class="d-flex justify-content-center">
+                  <div class="spinner-border text-light loading_signIn text-center mb-3 d-none" role="status">
+                     <span class="sr-only">Loading...</span>
+                  </div>
+               </div>
+               <div class="text-danger sign-in-form-alert mb-3" role="alert"></div>
+               <button type="submit" class="btn btn-outline-theme btn-block mb-3">Reset Password</button>
+               <div id="backToSignIn" class="text-center cursor">Back to Sign In</div>
+            </form>
+         </div>
+      </div>
+      <div class="modal fade" id="modalLang" tabindex="-1" role="dialog" aria-labelledby="modalLangLabel"
+         aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div style="background: #1C242C;" class="modal-content">
+               <div class="modal-header">
+                  <div class="h5 modal-title text-success" id="modalLangLabel">Choose your language:</div>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <div class="row">
+                     <div class="col-12 col-md-6 px-0">
+                        <a class="dropdown-item text-light" href="switch/bg" title="Bulgarian"><strong>Bulgarian <span class="text-secondary small">bg</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/zh" title="Chinese"><strong>Chinese <span class="text-secondary small">zh</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/cs" title="Czech"><strong>Czech <span class="text-secondary small">cs</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/da" title="Danish"><strong>Danish <span class="text-secondary small">da</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/nl" title="Dutch; Flemish"><strong>Dutch; Flemish <span class="text-secondary small">nl</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/en" title="English"><strong>English <span class="text-secondary small">en</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/fr" title="French"><strong>French <span class="text-secondary small">fr</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ka" title="Georgian"><strong>Georgian <span class="text-secondary small">ka</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/de" title="German"><strong>German <span class="text-secondary small">de</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/el" title="Greek"><strong>Greek <span class="text-secondary small">el</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/hu" title="Hungarian"><strong>Hungarian <span class="text-secondary small">hu</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/it" title="Italian"><strong>Italian <span class="text-secondary small">it</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ko" title="Korean"><strong>Korean <span class="text-secondary small">ko</span></strong></a>
+                     </div>
+                     <div class="col-12 col-md-6 px-0">
+                        <a class="dropdown-item text-light" href="switch/pl" title="Polish"><strong>Polish <span class="text-secondary small">pl</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/pt" title="Portuguese"><strong>Portuguese <span class="text-secondary small">pt</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ro" title="Romanian"><strong>Romanian <span class="text-secondary small">ro</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ru" title="Russian"><strong>Russian <span class="text-secondary small">ru</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/sr" title="Serbian"><strong>Serbian <span class="text-secondary small">sr</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/sk" title="Slovak"><strong>Slovak <span class="text-secondary small">sk</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/es" title="Spanish; Castilian"><strong>Spanish; Castilian <span class="text-secondary small">es</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/sv" title="Swedish"><strong>Swedish <span class="text-secondary small">sv</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/th" title="Thai"><strong>Thai <span class="text-secondary small">th</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/tr" title="Turkish"><strong>Turkish <span class="text-secondary small">tr</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/uk" title="Ukrainian"><strong>Ukrainian <span class="text-secondary small">uk</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/uz" title="Uzbek"><strong>Uzbek <span class="text-secondary small">uz</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/vi" title="Vietnamese"><strong>Vietnamese <span class="text-secondary small">vi</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ie" title="Ireland"><strong>Ireland <span class="text-secondary small">ie</span></strong></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <nav style="background: black" class="navbar navbar-expand-lg navbar-dark navbar-mopie fixed-top">
+         <a class="navbar-brand" href="/">
+            <span class="text-light">Go</span><span class="text-danger">Movie</span>
+            <!-- <img width="30" src="themes/v1/20200829-164822.png"> -->
+         </a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
+            aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarsExample04">
+            <ul class="navbar-nav mr-auto">
+               <li class="nav-item dropdown">
+                  <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">Movies <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                  <div style="background: #181A1D" class="dropdown-menu mop" aria-labelledby="dropdown04">
+                     <div class="row">
+                        <div class="col-12">
+                           <a class="dropdown-item text-light" href="movie-popular" title="Popular">Popular</a>
+                           <a class="dropdown-item text-light" href="movie-now-playing" title="Now Playing">Now Playing</a>
+                           <a class="dropdown-item text-light" href="movie-top-rated" title="Top Rated">Top Rated</a>
+                           <a class="dropdown-item text-light" href="movie-upcoming" title="Upcoming">Upcoming</a>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">TV Shows <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                  <div style="background: #181A1D" class="dropdown-menu mop" aria-labelledby="dropdown04">
+                     <div class="row">
+                        <div class="col-12">
+                           <a class="dropdown-item text-light" href="tv-popular" title="Popular">Popular</a>
+                           <a class="dropdown-item text-light" href="tv-top-rated" title="Top Rated">Top Rated</a>
+                           <a class="dropdown-item text-light" href="tv-on-the-air" title="On TV">On TV</a>
+                           <a class="dropdown-item text-light" href="tv-airing-to-day" title="Airing Today">Airing Today</a>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">Genres <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                  <div style="background: #181A1D" class="dropdown-menu px-3" aria-labelledby="dropdown04">
+                     <div class="row">
+                        <div class="col-6 px-0">
+                           <a class="dropdown-item text-light" href="genre/28/Action" title="Action">Action</a>
+                           <a class="dropdown-item text-light" href="genre/12/Adventure" title="Adventure">Adventure</a>
+                           <a class="dropdown-item text-light" href="genre/16/Animation" title="Animation">Animation</a>
+                           <a class="dropdown-item text-light" href="genre/35/Comedy" title="Comedy">Comedy</a>
+                           <a class="dropdown-item text-light" href="genre/80/Crime" title="Crime">Crime</a>
+                           <a class="dropdown-item text-light" href="genre/99/Documentary" title="Documentary">Documentary</a>
+                           <a class="dropdown-item text-light" href="genre/18/Drama" title="Drama">Drama</a>
+                           <a class="dropdown-item text-light" href="genre/10751/Family" title="Family">Family</a>
+                           <a class="dropdown-item text-light" href="genre/14/Fantasy" title="Fantasy">Fantasy</a>
+                           <a class="dropdown-item text-light" href="genre/36/History" title="History">History</a>
+                        </div>
+                        <div class="col-6 px-0">
+                           <a class="dropdown-item text-light" href="genre/27/Horror" title="Horror">Horror</a>
+                           <a class="dropdown-item text-light" href="genre/10402/Music" title="Music">Music</a>
+                           <a class="dropdown-item text-light" href="genre/9648/Mystery" title="Mystery">Mystery</a>
+                           <a class="dropdown-item text-light" href="genre/10749/Romance" title="Romance">Romance</a>
+                           <a class="dropdown-item text-light" href="genre/878/Science Fiction" title="Science Fiction">Science Fiction</a>
+                           <a class="dropdown-item text-light" href="genre/10770/TV Movie" title="TV Movie">TV Movie</a>
+                           <a class="dropdown-item text-light" href="genre/53/Thriller" title="Thriller">Thriller</a>
+                           <a class="dropdown-item text-light" href="genre/10752/War" title="War">War</a>
+                           <a class="dropdown-item text-light" href="genre/37/Western" title="Western">Western</a>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link text-light" href="person/popular" title="Popular People">Popular People</a>
+               </li>
+            </ul>
+            <ul class="navbar-nav">
+               <form class="input-group my-2 my-md-0 mr-md-3 bg-faded" action="/" method="GET">
+                  <input type="text" class="form-control" name="s" placeholder="Search..." aria-label="Search...">
+                  <div class="input-group-append">
+                     <button class="btn btn-search focus-no-sh" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                  </div>
+               </form>
+               <li class="nav-item">
+                  <div class="nav-link cursor mb-3 mb-md-0" data-toggle="modal" data-target="#modalLang"><i class="fa fa-globe" aria-hidden="true"></i></div>
+               </li>
+               <li class="nav-item">
+                  <button class="btn btn-outline-info ml-md-3 mb-3 mb-md-0 sign-in text-light">Sign In</button>
+               </li>
+               <li class="nav-item">
+                  <a id="aff" href="" class="btn btn-info ml-md-3 text-light">Register</i></a>
+               </li>
+            </ul>
+         </div>
+      </nav>
+      <section class="px-4r">
+         <div class="backdrop"></div>
+         <div class="container" style="border-radius: 5px">
+            <div class="row p-3">
+               <div class="col-md-9 mb-3">
+                  <div id="player-1" class="row">
+                     <div class="embed-responsive embed-responsive-16by9">
+                        <video id="play-video" class="video-js vjs-16-9 vjs-big-play-centered" controls="" preload="none" width="600" height="315" poster="" data-setup="" webkit-playsinline="true" playsinline="true">
+                           <source src="themes/v1/assets/intro-universal.mp4" type="video/mp4" label="SD">
+                           <source src="themes/v1/assets/intro-universal.mp4" type="video/mp4" label="HD">
+                           <track kind="subtitles" src="" srclang="en" label="English">
+                           <track kind="subtitles" src="" srclang="fr" label="French">
+                           <track kind="subtitles" src="" srclang="de" label="Germany">
+                           <track kind="subtitles" src="" srclang="nl" label="Netherland">
+                           <track kind="subtitles" src="" srclang="it" label="Italy">
+                        </video>
+                     </div>
+                  </div>
+                  <script>var playDuration = 129*60;</script>
+               </div>
+               <div class="col-md-3 mb-3" style="background-color: #0e1117;">
+                  <div class="row">
+                     <div class="col-md-12 mt-3">
+                        <a  id="aff" style="font-size: 15px;" href="" class="btn btn-outline-success mx-1 btn-lg btn-block">Watch Now <i class="fa fa-film" aria-hidden="true"></i></a>
+                     </div>
+                     <div class="col-md-12 mt-3">
+                        <a  id="aff" style="font-size: 15px;" href="" class="btn btn-outline-primary mx-1 btn-lg btn-block">Download <i class="fa fa-cloud-download" aria-hidden="true"></i></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="container p-3 p-md-4 rounded-lg mb-5" style="background-color: #0e1117">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="row">
+                  <div class="col-md-7 mb-5">
+                     <div class="entry-title d-flex flex-column-reverse flex-md-row justify-content-between">
+                        <h1 class="h2"><span class="tiny text-muted"></span></h1>
+                        <div class="sub-r mb-3">
+                           <a id="aff" href="" class="btn subs">Subscribe to Watch | $0.00</a>
+                        </div>
+                     </div>
+                     <div class="entry-info mb-3">
+                        <div class="__rate">
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star text-warning"></i>
+                           <i class="fa fa-star-o text-muted"></i>
+                           <i class="fa fa-star-o text-muted"></i>
+                        </div>
+                        <div class="__info">
+                           <span class="text-muted small"></span> <span class="text-muted small"></span>
+                        </div>
+                     </div>
+                     <div class="entry-desciption text-muted">
+                        <p class="overview"></p>
+                     </div>
+                     <div class="entry-table">
+                        <ul>
+                           <li>Released: <span class="release"></span></li>
+                           <li>Runtime: <span class="runtime"></span></li>
+                           <li>Genre: <span class="genre"></span></li>
+                           <li>Stars: <span class="stars"></span></li>
+                           <li>Director: <span class="director"></span></li>
+                        </ul>
+                     </div>
+                  </div>
+                  <div class="col-md-5">
+                     <div class="col-md-12">
+                        <div class="h6">Download : <strong class="text-color-theme">MKV</strong></div>
+                        <ul class="down-list mb-4">
+                           <li>
+                              <div class="dt"><strong>360p</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                           <li>
+                              <div class="dt"><strong>480p</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                           <li>
+                              <div class="dt"><strong>720p</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                           <li>
+                              <div class="dt"><strong>1080p</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                        </ul>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="h6">Download : <strong class="text-color-theme">MP4</strong></div>
+                        <ul class="down-list">
+                           <li>
+                              <div class="dt"><strong>360p</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                           <li>
+                              <div class="dt"><strong>480p</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                           <li>
+                              <div class="dt"><strong>MP4HD</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                           <li>
+                              <div class="dt"><strong>FULLHD</strong></div>
+                              <span>GD2</span> | <span>CU</span> | <span>GD1</span> | <span>ZS</span> | <span>RC</span>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="container">
+         <div class="row">
+            <div class="col-12 mb-4">
+               <h3 class="text-success h4">Movie Similars</h3>
+            </div>
+         </div>
+         <div class="owl-carousel">
+				<article id="" class="item">
+               	<div class="thumb mb-4">
+               	<a href="" rel="bookmark" title="">
+               	<div class="_img_holder">
+               		<img class="img-fluid rounded" src="" alt="" title="">
+               	<div class="_overlay_link">
+                               <button class="play-button play-button--small" type="button"></button>
+                               <div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div>
+               	</div>
+               	</div>
+               	</a>
+               	<header class="entry-header">
+               	<h2 class="entry-title">
+               	<a href="" class="_title" rel="bookmark" title="">Title</a>
+               	</h2>
+               	</header>
+               	</div>
+               	</article>    
+         </div>
+         <div class="divider"></div>
+         <div class="row">
+            <div class="col-12 mb-4">
+               <h3 class="text-success h4">Recommendations</h3>
+            </div>
+         </div>
+         <div class="owl-carousel">
+            	<article id="" class="item">
+               	<div class="thumb mb-4">
+               	<a href="" rel="bookmark" title="">
+               	<div class="_img_holder">
+               		<img class="img-fluid rounded" src="" alt="" title="">
+               	<div class="_overlay_link">
+                               <button class="play-button play-button--small" type="button"></button>
+                               <div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div>
+               	</div>
+               	</div>
+               	</a>
+               	<header class="entry-header">
+               	<h2 class="entry-title">
+               	<a href="" class="_title" rel="bookmark" title="">Title</a>
+               	</h2>
+               	</header>
+               	</div>
+               	</article> 
+         </div>
+      </section>
+      <div id="modal-watch" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-body mopie-modal-content p-0 border" style="background-image: url('')">
+                  <div class="align-items-center d-flex flex-column justify-content-center position-relative p-3 pt-5 text-center">
+                     <div class="ex-icon">
+                        <i class="fa fa-exclamation fa-4x" aria-hidden="true"></i>
+                     </div>
+                     <div class="h3 font-bold mt-3">Activate your FREE Trial Account!</div>
+                     <p>You must create an account to continue watching</p>
+                     <a id="aff" href="" class="btn btn-lg bg-theme bg-hover-theme mb-4">Continue to watch for FREE ➞</a>
+                  </div>
+               </div>
+               <div class="modal-footer align-items-center d-flex flex-column justify-content-center text-center text-dark">
+                  <p class="text-large mb-1"><i class="fa fa-clock-o mr-1" aria-hidden="true"></i><span class="text-large font-bold" style="font-weight: 700">Quick Sign Up!</span></p>
+                  <p class="small">It takes less then 1 minute to Sign Up, then you can enjoy Unlimited Movies & TV titles.</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <footer class="footer">
+         <div class="container">
+            <div class="footer_wrapper d-flex flex-column flex-md-row">
+               <div class="copyright">Copyright © 2023 <span class="text-capitalize">GoMovie</span> | All rights
+                  reserved
+               </div>
+               <div class="footer_links">
+                  <a href="page/dmca">DMCA</a>
+                  <a href="page/privacy-policy">Privacy Policy</a>
+                  <a href="page/term-condition">Term &amp; Condition</a>
+               </div>
+            </div>
+         </div>
+      </footer>
+      <script src="themes/v1/assets/s.js"></script>
+   </body>
+</html>
