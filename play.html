@@ -7,8 +7,8 @@
       <title></title>
       <meta name="description" content="">
       <meta name="keywords" content="saving the world, magic, ninja fighter, alternate dimension, shaolin monk, based on video game, martial arts tournament, gods, hand to hand combat">
-      <!--<script src="//use.fontawesome.com/3db27005e3.js"></script>
-      <link href="//use.fontawesome.com/3db27005e3.css" media="all" rel="stylesheet">-->
+      <script src="themes/v1/assets/3db27005e3.js"></script>
+      <link href="themes/v1/assets/3db27005e3.css" media="all" rel="stylesheet">
       <link rel="stylesheet" href="themes/v1/assets/styles.css">
       <script src="themes/v1/assets/scripts.js"></script>
       <meta name="theme-color" content="#161c23">
@@ -22,7 +22,7 @@
          	var infoURL =
          	  "https://api.themoviedb.org/3/movie/" +
          	  id +
-         	  "?&api_key=6b4357c41d9c606e4d7ebe2f4a8850ea";
+         	  "?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea&append_to_response=casts,similar";
          	  
          	$.getJSON(infoURL, function (data) {
          		var release = data.release_date;
@@ -57,6 +57,40 @@
          	  } else {
          		genre = data.genres[0].name;
          	  }
+
+			  $(data.casts.crew).each(function(){
+				if(this.job == "Director"){
+					director = this.name;
+				}
+			  });
+			  
+			  let actor = "";
+			  $(data.casts.cast).each(function(){
+					actor = actor+", "+this.name;
+			  });
+			  actor = actor.slice(1);
+			  
+			  let similar = '';
+			  let sim1 = '<div class="owl-carousel owl-loaded owl-drag"><div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 100%;">';
+			  let sim2 = '</div></div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev disabled"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next disabled"><span aria-label="Next">›</span></button></div><div class="owl-dots disabled"></div></div>';
+			  let sim3 ='';
+			  let postersimilar = '';
+			  let i = 1;
+			  $(data.similar.results).each(function(){
+					postersimilar = 'https://image.tmdb.org/t/p/w300'+this.poster_path;
+					if(postersimilar === "https://image.tmdb.org/t/p/w300null"){
+						postersimilar = 'themes/v1/assets/no-poster.png';
+					}
+					if(0<i<7|10<i<17){
+					sim3 = '<div class="owl-item" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
+					}else{
+					sim3 = '<div class="owl-item active" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
+					}
+					i=i+1;
+			  });
+			  
+			  similar = sim1+sim3+sim2;
+			  
          	  $('title').html(title);
          	  $(".backdrop").css("background-image", "url(" + backdrop + "?resize=300,450)");
          	  $(".vjs-poster").css("background-image", "url(" + backdrop + ")");
@@ -70,8 +104,9 @@
          	  $(".release").html(release);
          	  $(".runtime").html(runtime+" minutes");
          	  $(".genre").html(genre);
-         	  $(".star").html(release);
-         	  $(".director").html(release);
+         	  $(".stars").html(actor);
+         	  $(".director").html(director);
+			  $(".owl-stage").html(sim3);
          	})
          })
       </script>
@@ -403,52 +438,42 @@
                <h3 class="text-success h4">Movie Similars</h3>
             </div>
          </div>
-         <div class="owl-carousel">
-				<article id="" class="item">
-               	<div class="thumb mb-4">
-               	<a href="" rel="bookmark" title="">
-               	<div class="_img_holder">
-               		<img class="img-fluid rounded" src="" alt="" title="">
-               	<div class="_overlay_link">
-                               <button class="play-button play-button--small" type="button"></button>
-                               <div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div>
-               	</div>
-               	</div>
-               	</a>
-               	<header class="entry-header">
-               	<h2 class="entry-title">
-               	<a href="" class="_title" rel="bookmark" title="">Title</a>
-               	</h2>
-               	</header>
-               	</div>
-               	</article>    
+         
+		 <div class="owl-carousel">
+            	<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
          </div>
-         <div class="divider"></div>
+         
+         <!--<div class="divider"></div>
          <div class="row">
             <div class="col-12 mb-4">
                <h3 class="text-success h4">Recommendations</h3>
             </div>
          </div>
          <div class="owl-carousel">
-            	<article id="" class="item">
-               	<div class="thumb mb-4">
-               	<a href="" rel="bookmark" title="">
-               	<div class="_img_holder">
-               		<img class="img-fluid rounded" src="" alt="" title="">
-               	<div class="_overlay_link">
-                               <button class="play-button play-button--small" type="button"></button>
-                               <div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div>
-               	</div>
-               	</div>
-               	</a>
-               	<header class="entry-header">
-               	<h2 class="entry-title">
-               	<a href="" class="_title" rel="bookmark" title="">Title</a>
-               	</h2>
-               	</header>
-               	</div>
-               	</article> 
-         </div>
+            	<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+				<article id="" class="item"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="https://image.tmdb.org/t/p/w300/6dU83aEexYQM1j9x0oaG7I1mPSo.jpg" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+         </div>-->
       </section>
       <div id="modal-watch" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered" role="document">
@@ -458,7 +483,7 @@
                      <div class="ex-icon">
                         <i class="fa fa-exclamation fa-4x" aria-hidden="true"></i>
                      </div>
-                     <div class="h3 font-bold mt-3">Activate your FREE Account!</div>
+                     <div class="h3 font-bold mt-3">Activate your FREE Trial Account!</div>
                      <p>You must create an account to continue watching</p>
                      <a id="aff" href="" class="btn btn-lg bg-theme bg-hover-theme mb-4">Continue to watch for FREE ➞</a>
                   </div>
