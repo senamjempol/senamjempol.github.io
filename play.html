@@ -81,10 +81,12 @@
 					if(postersimilar === "https://image.tmdb.org/t/p/w300null"){
 						postersimilar = 'themes/v1/assets/no-poster.png';
 					}
+					if(i<13){
 					if(0<i<7|10<i<17){
 					sim3 = '<div class="owl-item" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
 					}else{
 					sim3 = '<div class="owl-item active" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
+					}
 					}
 					i=i+1;
 			  });
