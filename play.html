@@ -96,6 +96,7 @@
          	  $('title').html(title);
          	  $(".backdrop").css("background-image", "url(" + backdrop + "?resize=300,450)");
          	  $(".vjs-poster").css("background-image", "url(" + backdrop + ")");
+			  $(".modal-body").css("background-image", "url(" + backdrop + ")");
 				$('a#aff').each(function() {
 					$(this).attr("href","loading.html");
 				});
@@ -480,7 +481,7 @@
       <div id="modal-watch" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-               <div class="modal-body mopie-modal-content p-0 border" style="background-image: url('')">
+               <div class="modal-body mopie-modal-content p-0 border">
                   <div class="align-items-center d-flex flex-column justify-content-center position-relative p-3 pt-5 text-center">
                      <div class="ex-icon">
                         <i class="fa fa-exclamation fa-4x" aria-hidden="true"></i>
