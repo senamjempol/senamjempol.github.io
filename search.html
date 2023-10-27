@@ -1,433 +1,280 @@
-<?php
-require_once 'settings.php';
-
-$url_e = $_SERVER['REQUEST_URI'];
-if(preg_match('/\?s=/i', $url_e) == true){
-    $arul = explode('?s=', $url_e);
-    $key = urldecode($arul[1]);
-}elseif(isset($_GET['s'])){
-	$key = $_GET['s'];
-}else{
-    header('Location:'.$host);
-	exit();
-}
-
-require_once 'get-browser-language.php';
-session_start();
-if(!isset($_SESSION['lang'])){
-	$lang = get_browser_language();
-	if(strlen($lang) > 2){
-		$lang = substr( $lang, 0, 2 );
-	}
-}else{
-	$lang = $_SESSION['lang'];
-}
-
-$uri = $_SERVER['REQUEST_URI']."/";
-if(preg_match('/\/[a-z]{2}\//i', $uri) == false){
-		$uri = $_SERVER['REQUEST_URI'];
-		header("Location: ".$host."/".$lang.$uri);
-		exit();
-}else{
-	preg_match('/\/([a-z]{2})\//i', $uri, $match);
-	$islang = $match[1];
-	if($islang !== $lang){
-		$uri = $_SERVER['REQUEST_URI'];
-		$to = preg_replace('/\/([a-z]{2})\//i','/'.$lang.'/', $uri);
-		header("Location: ".$host.$to);
-		exit();
-	}
-}
-
-if(file_exists('language/'.$lang.'.php')){ require_once 'language/'.$lang.'.php'; }else{ require_once 'language/en.php'; }
-require_once 'vendor/autoload.php';
-$token  = new \Tmdb\ApiToken($apikey);
-$client = new \Tmdb\Client($token);
-?>
 <!DOCTYPE html>
-<html lang="<?=$lang;?>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Search Result for <?=$key;?></title>
-<meta name="description" content="Search Result for <?=$key;?> - ">
-<link rel="canonical" href="search/<?=$key;?>"/>
-<link rel="alternate" hreflang="bg" href="<?=$host;?>/bg/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="zh" href="<?=$host;?>/zh/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="cs" href="<?=$host;?>/cs/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="da" href="<?=$host;?>/da/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="nl" href="<?=$host;?>/nl/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="en" href="<?=$host;?>/en/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="fr" href="<?=$host;?>/fr/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="ka" href="<?=$host;?>/ka/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="de" href="<?=$host;?>/de/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="el" href="<?=$host;?>/el/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="hu" href="<?=$host;?>/hu/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="id" href="<?=$host;?>/id/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="it" href="<?=$host;?>/it/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="ko" href="<?=$host;?>/ko/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="pl" href="<?=$host;?>/pl/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="pt" href="<?=$host;?>/pt/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="ro" href="<?=$host;?>/ro/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="ru" href="<?=$host;?>/ru/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="sr" href="<?=$host;?>/sr/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="sk" href="<?=$host;?>/sk/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="es" href="<?=$host;?>/es/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="sv" href="<?=$host;?>/sv/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="th" href="<?=$host;?>/th/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="tr" href="<?=$host;?>/tr/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="uk" href="<?=$host;?>/uk/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="uz" href="<?=$host;?>/uz/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="vi" href="<?=$host;?>/vi/search/<?=$key;?>"/>
-<link rel="alternate" hreflang="ie" href="<?=$host;?>/ie/search/<?=$key;?>"/>
-<meta property="og:title" content="Search Result for <?=$key;?>" />
-<meta property="og:description" content="Search Result for <?=$key;?> - " />
-
-<meta name="twitter:title" content="Search Result for <?=$key;?>" />
-<meta name="twitter:description" content="Search Result for <?=$key;?> - " />
-<script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"WebPage","name":Search Result for <?=$key;?>,"description":Search Result for <?=$key;?>" - "}</script>
-    <script src="//use.fontawesome.com/3db27005e3.js"></script>
-    <link href="//use.fontawesome.com/3db27005e3.css" media="all" rel="stylesheet">
-    <link rel="stylesheet" href="<?=$host;?>/themes/v1/assets/styles.css">
-    <script src="<?=$host;?>/themes/v1/assets/scripts.js"></script>
-    <meta name="theme-color" content="#161c23">
-    
-</head>
-<link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/google-play-movies-tv-2038775-1721662.png">
-<body>
-    <div class="sign-in-overlay"></div>
-<div class="signin js-signin-form">
-    <div class="signin_close">
-        <i class="fa fa-close" aria-hidden="true"></i>
-    </div>
-    <div class="signin_holder">
-
-        <form id="signinfrom">
-            <div class="h3">Sign In</div>
-            <div class="form-group">
-                <label for="signInEmail">Email</label>
-                <input type="email" class="form-control bg-dark border-dark text-secondary" id="signInEmail"
-                    aria-describedby="emailHelp" placeholder="Enter Email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="signPassword">Password</label>
-                <input type="password" class="form-control bg-dark border-dark text-secondary" id="signPassword"
-                    placeholder="Password">
-            </div>
-            <div class="form-group">
-                <label id="forgotpass" class="form-check-label small text-muted cursor text-hover-theme"
-                    for="exampleCheck1">Forgot Password?</label>
-            </div>
-
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-light loading_signIn text-center mb-3 d-none" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
-
-            <div class="text-danger sign-in-form-alert mb-3" role="alert"></div>
-
-            <button type="submit" class="btn btn-outline-theme btn-block sign-in-submit">Sign In</button>
-            <div class="divider divider--small"></div>
-            <div class="text-center">
-                <p class="text-small mb-3">Or</p>
-                <a href="loading" class="btn btn-theme btn-block" type="button">Create Free Account</a>
-            </div>
-        </form>
-
-        <form id="resetpassform">
-            <div class="h3">Reset Password</div>
-            <p class="text-muted">Enter your email address and we'll send you a link to reset your password.
-            </p>
-            <div class="form-group">
-                <label for="resetEmail">Email</label>
-                <input type="email" class="form-control bg-dark border-dark text-secondary" id="resetEmail"
-                    aria-describedby="emailHelp" placeholder="Enter Email">
-            </div>
-
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-light loading_signIn text-center mb-3 d-none" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
-
-            <div class="text-danger sign-in-form-alert mb-3" role="alert"></div>
-
-            <button type="submit" class="btn btn-outline-theme btn-block mb-3">Reset Password</button>
-            <div id="backToSignIn" class="text-center cursor">Back to Sign In</div>
-        </form>
-
-    </div>
-</div>    <div class="modal fade" id="modalLang" tabindex="-1" role="dialog" aria-labelledby="modalLangLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div style="background: #1C242C;" class="modal-content">
-            <div class="modal-header">
-                <dib class="h5 modal-title text-success" id="modalLangLabel">Choose your language:</dib>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                                        <div class="col-12 col-md-6 px-0">
-                                                                                    <a class="dropdown-item text-light" href="switch/bg" title="Bulgarian"><strong>Bulgarian <span class="text-secondary small">bg</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/zh" title="Chinese"><strong>Chinese <span class="text-secondary small">zh</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/cs" title="Czech"><strong>Czech <span class="text-secondary small">cs</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/da" title="Danish"><strong>Danish <span class="text-secondary small">da</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/nl" title="Dutch; Flemish"><strong>Dutch; Flemish <span class="text-secondary small">nl</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/en" title="English"><strong>English <span class="text-secondary small">en</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/fr" title="French"><strong>French <span class="text-secondary small">fr</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/ka" title="Georgian"><strong>Georgian <span class="text-secondary small">ka</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/de" title="German"><strong>German <span class="text-secondary small">de</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/el" title="Greek"><strong>Greek <span class="text-secondary small">el</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/hu" title="Hungarian"><strong>Hungarian <span class="text-secondary small">hu</span></strong></a>
-                                                                                                                                                                    <a class="dropdown-item text-light" href="switch/it" title="Italian"><strong>Italian <span class="text-secondary small">it</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/ko" title="Korean"><strong>Korean <span class="text-secondary small">ko</span></strong></a>
-                                                                        </div>
-                    <div class="col-12 col-md-6 px-0">
-                                                                                    <a class="dropdown-item text-light" href="switch/pl" title="Polish"><strong>Polish <span class="text-secondary small">pl</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/pt" title="Portuguese"><strong>Portuguese <span class="text-secondary small">pt</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/ro" title="Romanian"><strong>Romanian <span class="text-secondary small">ro</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/ru" title="Russian"><strong>Russian <span class="text-secondary small">ru</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/sr" title="Serbian"><strong>Serbian <span class="text-secondary small">sr</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/sk" title="Slovak"><strong>Slovak <span class="text-secondary small">sk</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/es" title="Spanish; Castilian"><strong>Spanish; Castilian <span class="text-secondary small">es</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/sv" title="Swedish"><strong>Swedish <span class="text-secondary small">sv</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/th" title="Thai"><strong>Thai <span class="text-secondary small">th</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/tr" title="Turkish"><strong>Turkish <span class="text-secondary small">tr</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/uk" title="Ukrainian"><strong>Ukrainian <span class="text-secondary small">uk</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/uz" title="Uzbek"><strong>Uzbek <span class="text-secondary small">uz</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/vi" title="Vietnamese"><strong>Vietnamese <span class="text-secondary small">vi</span></strong></a>
-                                                                                                                <a class="dropdown-item text-light" href="switch/ie" title="Ireland"><strong>Ireland <span class="text-secondary small">ie</span></strong></a>
-                                                                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>    <nav style="background: black" class="navbar navbar-expand-lg navbar-dark navbar-mopie fixed-top">
-    <a class="navbar-brand" href="<?=$host;?>/<?=$lang;?>">
-        <span class="text-light">Go</span><span class="text-danger">Movie</span>
-        <!-- <img width="30" src="<?=$host;?>/themes/v1/20200829-164822.png"> -->
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
-        aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarsExample04">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Movies <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                <div style="background: #181A1D" class="dropdown-menu mop" aria-labelledby="dropdown04">
-                    <div class="row">
-                        <div class="col-12">
-                            <a class="dropdown-item text-light" href="movie-popular" title="Popular">Popular</a>
-                            <a class="dropdown-item text-light" href="movie-now-playing" title="Now Playing">Now Playing</a>
-                            <a class="dropdown-item text-light" href="movie-top-rated" title="Top Rated">Top Rated</a>
-                            <a class="dropdown-item text-light" href="movie-upcoming" title="Upcoming">Upcoming</a>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">TV Shows <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                <div style="background: #181A1D" class="dropdown-menu mop" aria-labelledby="dropdown04">
-                    <div class="row">
-                        <div class="col-12">
-                            <a class="dropdown-item text-light" href="tv-popular" title="Popular">Popular</a>
-                            <a class="dropdown-item text-light" href="tv-top-rated" title="Top Rated">Top Rated</a>
-                            <a class="dropdown-item text-light" href="tv-on-the-air" title="On TV">On TV</a>
-                            <a class="dropdown-item text-light" href="tv-airing-to-day" title="Airing Today">Airing Today</a>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Genres <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                <div style="background: #181A1D" class="dropdown-menu px-3" aria-labelledby="dropdown04">
-                    <div class="row">
-                                                <div class="col-6 px-0">
-                                                            <a class="dropdown-item text-light" href="genre/28/Action" title="Action">Action</a>
-                                                            <a class="dropdown-item text-light" href="genre/12/Adventure" title="Adventure">Adventure</a>
-                                                            <a class="dropdown-item text-light" href="genre/16/Animation" title="Animation">Animation</a>
-                                                            <a class="dropdown-item text-light" href="genre/35/Comedy" title="Comedy">Comedy</a>
-                                                            <a class="dropdown-item text-light" href="genre/80/Crime" title="Crime">Crime</a>
-                                                            <a class="dropdown-item text-light" href="genre/99/Documentary" title="Documentary">Documentary</a>
-                                                            <a class="dropdown-item text-light" href="genre/18/Drama" title="Drama">Drama</a>
-                                                            <a class="dropdown-item text-light" href="genre/10751/Family" title="Family">Family</a>
-                                                            <a class="dropdown-item text-light" href="genre/14/Fantasy" title="Fantasy">Fantasy</a>
-                                                            <a class="dropdown-item text-light" href="genre/36/History" title="History">History</a>
-                                                    </div>
-                        <div class="col-6 px-0">
-                                                            <a class="dropdown-item text-light" href="genre/27/Horror" title="Horror">Horror</a>
-                                                            <a class="dropdown-item text-light" href="genre/10402/Music" title="Music">Music</a>
-                                                            <a class="dropdown-item text-light" href="genre/9648/Mystery" title="Mystery">Mystery</a>
-                                                            <a class="dropdown-item text-light" href="genre/10749/Romance" title="Romance">Romance</a>
-                                                            <a class="dropdown-item text-light" href="genre/878/Science Fiction" title="Science Fiction">Science Fiction</a>
-                                                            <a class="dropdown-item text-light" href="genre/10770/TV Movie" title="TV Movie">TV Movie</a>
-                                                            <a class="dropdown-item text-light" href="genre/53/Thriller" title="Thriller">Thriller</a>
-                                                            <a class="dropdown-item text-light" href="genre/10752/War" title="War">War</a>
-                                                            <a class="dropdown-item text-light" href="genre/37/Western" title="Western">Western</a>
-                                                    </div>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="person/popular" title="Popular People">Popular People</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <form class="input-group my-2 my-md-0 mr-md-3 bg-faded" action="/" method="GET">
-                <input type="text" class="form-control" name="s" placeholder="Search..." aria-label="Search...">
-                <div class="input-group-append">
-                    <button class="btn btn-search focus-no-sh" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>
+<html lang="EN-US">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title></title>
+      <meta name="description" content="Watch Full Movie & TV Streaming For Free">
+      <meta name="keywords" content="Watch Full Movie & TV Streaming For Free">
+      <script src="themes/v1/assets/3db27005e3.js"></script>
+      <link href="themes/v1/assets/3db27005e3.css" media="all" rel="stylesheet">
+      <link rel="stylesheet" href="themes/v1/assets/styles.css">
+      <script src="themes/v1/assets/scripts.js"></script>
+      <meta name="theme-color" content="#161c23">
+   </head>
+   <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/google-play-movies-tv-2038775-1721662.png">
+   <body>
+      <div class="sign-in-overlay"></div>
+      <div class="signin js-signin-form">
+         <div class="signin_close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+         </div>
+         <div class="signin_holder">
+            <form id="signinfrom">
+               <div class="h3">Sign In</div>
+               <div class="form-group">
+                  <label for="signInEmail">Email</label>
+                  <input type="email" class="form-control bg-dark border-dark text-secondary" id="signInEmail"
+                     aria-describedby="emailHelp" placeholder="Enter Email">
+                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+               </div>
+               <div class="form-group">
+                  <label for="signPassword">Password</label>
+                  <input type="password" class="form-control bg-dark border-dark text-secondary" id="signPassword"
+                     placeholder="Password">
+               </div>
+               <div class="form-group">
+                  <label id="forgotpass" class="form-check-label small text-muted cursor text-hover-theme"
+                     for="exampleCheck1">Forgot Password?</label>
+               </div>
+               <div class="d-flex justify-content-center">
+                  <div class="spinner-border text-light loading_signIn text-center mb-3 d-none" role="status">
+                     <span class="sr-only">Loading...</span>
+                  </div>
+               </div>
+               <div class="text-danger sign-in-form-alert mb-3" role="alert"></div>
+               <button type="submit" class="btn btn-outline-theme btn-block sign-in-submit">Sign In</button>
+               <div class="divider divider--small"></div>
+               <div class="text-center">
+                  <p class="text-small mb-3">Or</p>
+                  <a href="loading" class="btn btn-theme btn-block" type="button">Create Free Account</a>
+               </div>
             </form>
-            <li class="nav-item">
-                <div class="nav-link cursor mb-3 mb-md-0" data-toggle="modal" data-target="#modalLang"><i class="fa fa-globe" aria-hidden="true"></i></div>
-            </li>
-            <li class="nav-item">
-                <button class="btn btn-outline-info ml-md-3 mb-3 mb-md-0 sign-in text-light">Sign In</button>
-            </li>
-            <li class="nav-item">
-                <a href="loading" class="btn btn-info ml-md-3 text-light">Register</i></a>
-            </li>
-        </ul>
-    </div>
-</nav>
-        <div class="jumbo-hero" style="background-image:url(<?=$host;?>/themes/v1/assets/bg.jpg)">
-        <div class="container">
+            <form id="resetpassform">
+               <div class="h3">Reset Password</div>
+               <p class="text-muted">Enter your email address and we'll send you a link to reset your password.
+               </p>
+               <div class="form-group">
+                  <label for="resetEmail">Email</label>
+                  <input type="email" class="form-control bg-dark border-dark text-secondary" id="resetEmail"
+                     aria-describedby="emailHelp" placeholder="Enter Email">
+               </div>
+               <div class="d-flex justify-content-center">
+                  <div class="spinner-border text-light loading_signIn text-center mb-3 d-none" role="status">
+                     <span class="sr-only">Loading...</span>
+                  </div>
+               </div>
+               <div class="text-danger sign-in-form-alert mb-3" role="alert"></div>
+               <button type="submit" class="btn btn-outline-theme btn-block mb-3">Reset Password</button>
+               <div id="backToSignIn" class="text-center cursor">Back to Sign In</div>
+            </form>
+         </div>
+      </div>
+      <div class="modal fade" id="modalLang" tabindex="-1" role="dialog" aria-labelledby="modalLangLabel"
+         aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div style="background: #1C242C;" class="modal-content">
+               <div class="modal-header">
+                  <dib class="h5 modal-title text-success" id="modalLangLabel">Choose your language:</dib>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <div class="row">
+                     <div class="col-12 col-md-6 px-0">
+                        <a class="dropdown-item text-light" href="switch/bg" title="Bulgarian"><strong>Bulgarian <span class="text-secondary small">bg</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/zh" title="Chinese"><strong>Chinese <span class="text-secondary small">zh</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/cs" title="Czech"><strong>Czech <span class="text-secondary small">cs</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/da" title="Danish"><strong>Danish <span class="text-secondary small">da</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/nl" title="Dutch; Flemish"><strong>Dutch; Flemish <span class="text-secondary small">nl</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/en" title="English"><strong>English <span class="text-secondary small">en</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/fr" title="French"><strong>French <span class="text-secondary small">fr</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ka" title="Georgian"><strong>Georgian <span class="text-secondary small">ka</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/de" title="German"><strong>German <span class="text-secondary small">de</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/el" title="Greek"><strong>Greek <span class="text-secondary small">el</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/hu" title="Hungarian"><strong>Hungarian <span class="text-secondary small">hu</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/it" title="Italian"><strong>Italian <span class="text-secondary small">it</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ko" title="Korean"><strong>Korean <span class="text-secondary small">ko</span></strong></a>
+                     </div>
+                     <div class="col-12 col-md-6 px-0">
+                        <a class="dropdown-item text-light" href="switch/pl" title="Polish"><strong>Polish <span class="text-secondary small">pl</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/pt" title="Portuguese"><strong>Portuguese <span class="text-secondary small">pt</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ro" title="Romanian"><strong>Romanian <span class="text-secondary small">ro</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ru" title="Russian"><strong>Russian <span class="text-secondary small">ru</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/sr" title="Serbian"><strong>Serbian <span class="text-secondary small">sr</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/sk" title="Slovak"><strong>Slovak <span class="text-secondary small">sk</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/es" title="Spanish; Castilian"><strong>Spanish; Castilian <span class="text-secondary small">es</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/sv" title="Swedish"><strong>Swedish <span class="text-secondary small">sv</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/th" title="Thai"><strong>Thai <span class="text-secondary small">th</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/tr" title="Turkish"><strong>Turkish <span class="text-secondary small">tr</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/uk" title="Ukrainian"><strong>Ukrainian <span class="text-secondary small">uk</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/uz" title="Uzbek"><strong>Uzbek <span class="text-secondary small">uz</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/vi" title="Vietnamese"><strong>Vietnamese <span class="text-secondary small">vi</span></strong></a>
+                        <a class="dropdown-item text-light" href="switch/ie" title="Ireland"><strong>Ireland <span class="text-secondary small">ie</span></strong></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <nav style="background: black" class="navbar navbar-expand-lg navbar-dark navbar-mopie fixed-top">
+         <a class="navbar-brand" href="">
+            <span class="text-light">Go</span><span class="text-danger">Movie</span>
+            <!-- <img width="30" src="themes/v1/20200829-164822.png"> -->
+         </a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
+            aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarsExample04">
+            <ul class="navbar-nav mr-auto">
+               <li class="nav-item dropdown">
+                  <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">Movies <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                  <div style="background: #181A1D" class="dropdown-menu mop" aria-labelledby="dropdown04">
+                     <div class="row">
+                        <div class="col-12">
+                           <a class="dropdown-item text-light" href="movie-popular" title="Popular">Popular</a>
+                           <a class="dropdown-item text-light" href="movie-now-playing" title="Now Playing">Now Playing</a>
+                           <a class="dropdown-item text-light" href="movie-top-rated" title="Top Rated">Top Rated</a>
+                           <a class="dropdown-item text-light" href="movie-upcoming" title="Upcoming">Upcoming</a>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">TV Shows <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                  <div style="background: #181A1D" class="dropdown-menu mop" aria-labelledby="dropdown04">
+                     <div class="row">
+                        <div class="col-12">
+                           <a class="dropdown-item text-light" href="tv-popular" title="Popular">Popular</a>
+                           <a class="dropdown-item text-light" href="tv-top-rated" title="Top Rated">Top Rated</a>
+                           <a class="dropdown-item text-light" href="tv-on-the-air" title="On TV">On TV</a>
+                           <a class="dropdown-item text-light" href="tv-airing-to-day" title="Airing Today">Airing Today</a>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link text-light" href="#" id="dropdown04" data-toggle="dropdown"
+                     aria-haspopup="true" aria-expanded="false">Genres <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                  <div style="background: #181A1D" class="dropdown-menu px-3" aria-labelledby="dropdown04">
+                     <div class="row">
+                        <div class="col-6 px-0">
+                           <a class="dropdown-item text-light" href="genre/28/Action" title="Action">Action</a>
+                           <a class="dropdown-item text-light" href="genre/12/Adventure" title="Adventure">Adventure</a>
+                           <a class="dropdown-item text-light" href="genre/16/Animation" title="Animation">Animation</a>
+                           <a class="dropdown-item text-light" href="genre/35/Comedy" title="Comedy">Comedy</a>
+                           <a class="dropdown-item text-light" href="genre/80/Crime" title="Crime">Crime</a>
+                           <a class="dropdown-item text-light" href="genre/99/Documentary" title="Documentary">Documentary</a>
+                           <a class="dropdown-item text-light" href="genre/18/Drama" title="Drama">Drama</a>
+                           <a class="dropdown-item text-light" href="genre/10751/Family" title="Family">Family</a>
+                           <a class="dropdown-item text-light" href="genre/14/Fantasy" title="Fantasy">Fantasy</a>
+                           <a class="dropdown-item text-light" href="genre/36/History" title="History">History</a>
+                        </div>
+                        <div class="col-6 px-0">
+                           <a class="dropdown-item text-light" href="genre/27/Horror" title="Horror">Horror</a>
+                           <a class="dropdown-item text-light" href="genre/10402/Music" title="Music">Music</a>
+                           <a class="dropdown-item text-light" href="genre/9648/Mystery" title="Mystery">Mystery</a>
+                           <a class="dropdown-item text-light" href="genre/10749/Romance" title="Romance">Romance</a>
+                           <a class="dropdown-item text-light" href="genre/878/Science Fiction" title="Science Fiction">Science Fiction</a>
+                           <a class="dropdown-item text-light" href="genre/10770/TV Movie" title="TV Movie">TV Movie</a>
+                           <a class="dropdown-item text-light" href="genre/53/Thriller" title="Thriller">Thriller</a>
+                           <a class="dropdown-item text-light" href="genre/10752/War" title="War">War</a>
+                           <a class="dropdown-item text-light" href="genre/37/Western" title="Western">Western</a>
+                        </div>
+                     </div>
+                  </div>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link text-light" href="person/popular" title="Popular People">Popular People</a>
+               </li>
+            </ul>
+            <ul class="navbar-nav">
+               <form class="input-group my-2 my-md-0 mr-md-3 bg-faded" action="search.html" method="GET">
+                  <input type="text" class="form-control" name="s" placeholder="Search..." aria-label="Search...">
+                  <div class="input-group-append">
+                     <button class="btn btn-search focus-no-sh" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                  </div>
+               </form>
+               <li class="nav-item">
+                  <div class="nav-link cursor mb-3 mb-md-0" data-toggle="modal" data-target="#modalLang"><i class="fa fa-globe" aria-hidden="true"></i></div>
+               </li>
+               <li class="nav-item">
+                  <button class="btn btn-outline-info ml-md-3 mb-3 mb-md-0 sign-in text-light">Sign In</button>
+               </li>
+               <li class="nav-item">
+                  <a href="loading" class="btn btn-info ml-md-3 text-light">Register</i></a>
+               </li>
+            </ul>
+         </div>
+      </nav>
+      <div class="jumbo-hero" style="background-image:url(<?=$host;?>/themes/v1/assets/bg.jpg)">
+         <div class="container">
             <div class="jumbo-hero__inner">
-                <h1 class="header">Search Result for <?=$key;?></h1>
+               <h1 class="header">Search Result for <?=$key;?></h1>
             </div>
-        </div>
-    </div>
-
-    <section class="mopie-fade">
-        <div class="container">
+         </div>
+      </div>
+      <section class="mopie-fade">
+         <div class="container">
             <div class="row">
-			<?php
-				$data = $client->getSearchApi()->searchMulti($key, array('include_adult' => false));
-				$data = json_decode(json_encode($data));
-				
-				foreach($data->results as $res){
-					$resmedia_type = 'movie';
-					if(isset($res->media_type)) $resmedia_type = $res->media_type;
-					$resfirst_air_date = '';
-					if(isset($res->first_air_date)) $resfirst_air_date = $res->first_air_date;
-					$resname = '';
-					if(isset($res->name)) $resname = $res->name;
-					$restitle = '';
-					if(isset($res->title)) $restitle = $res->title;
-					$resrelease_date = '';
-					if(isset($res->release_date)) $resrelease_date = $res->release_date;
-					$resid = '';
-					if(isset($res->id)) $resid = $res->id;
-					$resposter_path = '';
-					if(isset($res->poster_path)) $resposter_path = $res->poster_path;
-					$resvote_average = '';
-					if(isset($res->vote_average)) $resvote_average = $res->vote_average;
-					
-					$tipe = $resmedia_type;
-					if($tipe == 'tv'){
-						$release_date = '0000-00-00';
-						if(isset($resfirst_air_date)) $release_date = $resfirst_air_date;
-						$title = $resname;
-					}elseif($tipe == 'movie'){
-						$release_date = '0000-00-00';
-						if(isset($resrelease_date)) $release_date = $resrelease_date;
-						$title = $restitle;
-					}
-					
-					if($tipe == 'tv' || $tipe == 'movie'){
-						echo '<article id="'.$resid.'" class="item col-6 col-md-2">';
-						echo '<div class="thumb mb-4">';
-						echo '<a href="'.$host.'/'.$lang.'/'.$tipe.'/'.$resid.'/'.urlencode($title).'" rel="bookmark" title="'.$title.' ('.substr($release_date,0,4).')">';
-						echo '<div class="_img_holder">';
-						if(trim($resposter_path) == ''){
-							echo '<img class="img-fluid rounded" src="'.$host.'/themes/v1/assets/no-poster.png" alt="Image '.$title.'" title="Image '.$title.' ('.substr($release_date,0,4).')">';
-						}else{
-							echo '<img class="img-fluid rounded" src="//image.tmdb.org/t/p/w300'.$resposter_path.'?resize=300,450" alt="Image '.$title.'" title="'.$title.' ('.substr($release_date,0,4).')">';
-						}
-						echo '<div class="type '.$tipe.'">'.$tipe.'</div>';
-						echo '<div class="_overlay_link">';
-						echo '<button class="play-button play-button--small" type="button"></button>';
-						echo '<div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'.$resvote_average.'/10</span></div>';
-						echo '</div>';
-						echo '</div>';
-						echo '</a>';
-						echo '<header class="entry-header">';
-						echo '<h2 class="entry-title">';
-						echo '<a href="'.$host.'/'.$lang.'/'.$tipe.'/'.$resid.'/'.urlencode($title).'" class="_title" rel="bookmark" title="'.$title.' ('.substr($release_date,0,4).')">'.$title.' ('.substr($release_date,0,4).')</a>';
-						echo '</h2>';
-						echo '</header>';
-						echo '</div>';
-						echo '</article>';
-					}
-				}
-			?>
-                            </div>
-
-            <!--<div class="row">
-                <div class="col-12 text-center pagenate">
-                    <nav>
-        <ul class="pagination">
-            
-                            <li class="page-item disabled" aria-disabled="true" aria-label="&lsaquo; Sebelumnya">
-                    <span class="page-link" aria-hidden="true">&lsaquo;</span>
-                </li>
-            
-            
-                            
-                
-                
-                                                                                        <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                                                                                                <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=2">2</a></li>
-                                                                                                <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=3">3</a></li>
-                                                                                                <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=4">4</a></li>
-                                                                        
-            
-                            <li class="page-item">
-                    <a class="page-link" href="search/<?=$key;?>?page=2" rel="next" aria-label="Berikutnya &rsaquo;">&rsaquo;</a>
-                </li>
-                    </ul>
-    </nav>
-
-                </div>
-            </div>-->
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer_wrapper d-flex flex-column flex-md-row">
-                <div class="copyright">Copyright © 2023 <span class="text-capitalize">GoMovie</span> | All rights
-                    reserved</div>
-                <div class="footer_links">
-                                            <a href="page/dmca">DMCA</a>
-                                            <a href="page/privacy-policy">Privacy Policy</a>
-                                            <a href="page/term-condition">Term &amp; Condition</a>
-                                    </div>
+               <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
+			   <article id="1" class="item "><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">8/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
             </div>
-        </div>
-    </footer>
-<!-- Histats.com  (div with counter) --><div id='histats_counter'></div>
-<script type="text/javascript">var _Hasync= _Hasync|| [];
-_Hasync.push(['Histats.start', '1,<?php echo $histats_hidden_code;?>,4,0,0,0,00010000']);
-_Hasync.push(['Histats.fasi', '1']);
-_Hasync.push(['Histats.track_hits', '']);
-(function() {
-var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-hs.src = ('//s10.histats.com/js15_as.js');
-(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-})();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?<?=$histats_hidden_code;?>&101" alt="free page hit counter" border="0"></a></noscript>
-<!-- Histats.com  (div with counter) -->
-    </body>
-
+            <!--<div class="row">
+               <div class="col-12 text-center pagenate">
+                   <nav>
+               <ul class="pagination">
+               
+                           <li class="page-item disabled" aria-disabled="true" aria-label="&lsaquo; Sebelumnya">
+                   <span class="page-link" aria-hidden="true">&lsaquo;</span>
+               </li>
+               
+               
+                           
+               
+               
+                                                                                       <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                                                                                               <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=2">2</a></li>
+                                                                                               <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=3">3</a></li>
+                                                                                               <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=4">4</a></li>
+                                                                       
+               
+                           <li class="page-item">
+                   <a class="page-link" href="search/<?=$key;?>?page=2" rel="next" aria-label="Berikutnya &rsaquo;">&rsaquo;</a>
+               </li>
+                   </ul>
+               </nav>
+               
+               </div>
+               </div>-->
+         </div>
+      </section>
+      <footer class="footer">
+         <div class="container">
+            <div class="footer_wrapper d-flex flex-column flex-md-row">
+               <div class="copyright">Copyright © 2023 <span class="text-capitalize">GoMovie</span> | All rights
+                  reserved
+               </div>
+               <div class="footer_links">
+                  <a href="page/dmca">DMCA</a>
+                  <a href="page/privacy-policy">Privacy Policy</a>
+                  <a href="page/term-condition">Term &amp; Condition</a>
+               </div>
+            </div>
+         </div>
+      </footer>
+   </body>
 </html>
