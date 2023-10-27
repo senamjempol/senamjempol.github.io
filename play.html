@@ -12,107 +12,6 @@
       <link rel="stylesheet" href="themes/v1/assets/styles.css">
       <script src="themes/v1/assets/scripts.js"></script>
       <meta name="theme-color" content="#161c23">
-      <script>
-         $( document ).ready(function() {
-			const queryString = window.location.search;
-			const urlParams = new URLSearchParams(queryString);
-			const id = urlParams.get('id');
-         	var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
-         	var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
-         	var infoURL =
-         	  "https://api.themoviedb.org/3/movie/" +
-         	  id +
-         	  "?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea&append_to_response=casts,similar";
-         	  
-         	$.getJSON(infoURL, function (data) {
-         		var release = data.release_date;
-         		var runtime = data.runtime;
-         		var tagline = data.tagline;
-         		var year = data.release_date.slice(0, 4);
-         		var title = data.title;
-         		var rating = data.vote_average;
-         		var user = data.vote_count;
-         		var overview = data.overview;
-         		var poster = posterPaths + data.poster_path;
-         		var backdrop = backgroundPaths + data.backdrop_path;
-         		
-         		if (data.genres.length > 3) {
-         		genre =
-         		  data.genres[0].name +
-         		  ", " +
-         		  data.genres[1].name +
-         		  ", " +
-         		  data.genres[2].name +
-         		  ", " +
-         		  data.genres[3].name;
-         	  } else if (data.genres.length > 2) {
-         		genre =
-         		  data.genres[0].name +
-         		  ", " +
-         		  data.genres[1].name +
-         		  ", " +
-         		  data.genres[2].name;
-         	  } else if (data.genres.length > 1) {
-         		genre = data.genres[0].name + ", " + data.genres[1].name;
-         	  } else {
-         		genre = data.genres[0].name;
-         	  }
-
-			  $(data.casts.crew).each(function(){
-				if(this.job == "Director"){
-					director = this.name;
-				}
-			  });
-			  
-			  let actor = "";
-			  $(data.casts.cast).each(function(){
-					actor = actor+", "+this.name;
-			  });
-			  actor = actor.slice(1);
-			  
-			  let similar = '';
-			  let sim1 = '<div class="owl-carousel owl-loaded owl-drag"><div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 100%;">';
-			  let sim2 = '</div></div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev disabled"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next disabled"><span aria-label="Next">›</span></button></div><div class="owl-dots disabled"></div></div>';
-			  let sim3 ='';
-			  let postersimilar = '';
-			  let i = 1;
-			  $(data.similar.results).each(function(){
-					postersimilar = 'https://image.tmdb.org/t/p/w300'+this.poster_path;
-					if(postersimilar === "https://image.tmdb.org/t/p/w300null"){
-						postersimilar = 'themes/v1/assets/no-poster.png';
-					}
-					if(i<13){
-					if(0<i<7|10<i<17){
-					sim3 = '<div class="owl-item" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
-					}else{
-					sim3 = '<div class="owl-item active" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
-					}
-					}
-					i=i+1;
-			  });
-			  
-			  similar = sim1+sim3+sim2;
-			  
-         	  $('title').html(title);
-         	  $(".backdrop").css("background-image", "url(" + backdrop + "?resize=300,450)");
-         	  $(".vjs-poster").css("background-image", "url(" + backdrop + ")");
-			  $(".modal-body").css("background-image", "url(" + backdrop + ")");
-				$('a#aff').each(function() {
-					$(this).attr("href","loading.html");
-				});
-         	  $("h1.h2").html(title+"<span class=\"tiny text-muted\">"+year+"</span>");
-         	  $("#rating").html(rating+"/10");
-         	  $("#user").html("by "+user+" users");
-         	  $(".overview").html(overview);
-         	  $(".release").html(release);
-         	  $(".runtime").html(runtime+" minutes");
-         	  $(".genre").html(genre);
-         	  $(".stars").html(actor);
-         	  $(".director").html(director);
-			  $(".owl-stage").html(sim3);
-         	})
-         })
-      </script>
    </head>
    <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/google-play-movies-tv-2038775-1721662.png">
    <body>
@@ -513,5 +412,106 @@
          </div>
       </footer>
       <script src="themes/v1/assets/s.js"></script>
+	  <script>
+         $( document ).ready(function() {
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const id = urlParams.get('id');
+         	var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
+         	var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
+         	var infoURL =
+         	  "https://api.themoviedb.org/3/movie/" +
+         	  id +
+         	  "?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea&append_to_response=casts,similar";
+         	  
+         	$.getJSON(infoURL, function (data) {
+         		var release = data.release_date;
+         		var runtime = data.runtime;
+         		var tagline = data.tagline;
+         		var year = data.release_date.slice(0, 4);
+         		var title = data.title;
+         		var rating = data.vote_average;
+         		var user = data.vote_count;
+         		var overview = data.overview;
+         		var poster = posterPaths + data.poster_path;
+         		var backdrop = backgroundPaths + data.backdrop_path;
+         		
+         		if (data.genres.length > 3) {
+         		genre =
+         		  data.genres[0].name +
+         		  ", " +
+         		  data.genres[1].name +
+         		  ", " +
+         		  data.genres[2].name +
+         		  ", " +
+         		  data.genres[3].name;
+         	  } else if (data.genres.length > 2) {
+         		genre =
+         		  data.genres[0].name +
+         		  ", " +
+         		  data.genres[1].name +
+         		  ", " +
+         		  data.genres[2].name;
+         	  } else if (data.genres.length > 1) {
+         		genre = data.genres[0].name + ", " + data.genres[1].name;
+         	  } else {
+         		genre = data.genres[0].name;
+         	  }
+
+			  $(data.casts.crew).each(function(){
+				if(this.job == "Director"){
+					director = this.name;
+				}
+			  });
+			  
+			  let actor = "";
+			  $(data.casts.cast).each(function(){
+					actor = actor+", "+this.name;
+			  });
+			  actor = actor.slice(1);
+			  
+			  let similar = '';
+			  let sim1 = '<div class="owl-carousel owl-loaded owl-drag"><div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 100%;">';
+			  let sim2 = '</div></div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev disabled"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next disabled"><span aria-label="Next">›</span></button></div><div class="owl-dots disabled"></div></div>';
+			  let sim3 ='';
+			  let postersimilar = '';
+			  let i = 1;
+			  $(data.similar.results).each(function(){
+					postersimilar = 'https://image.tmdb.org/t/p/w300'+this.poster_path;
+					if(postersimilar === "https://image.tmdb.org/t/p/w300null"){
+						postersimilar = 'themes/v1/assets/no-poster.png';
+					}
+					if(i<13){
+					if(0<i<7|10<i<17){
+					sim3 = '<div class="owl-item" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
+					}else{
+					sim3 = '<div class="owl-item active" style="width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+postersimilar+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>'+sim3;
+					}
+					}
+					i=i+1;
+			  });
+			  
+			  similar = sim1+sim3+sim2;
+			  
+         	  $('title').html(title);
+         	  $(".backdrop").css("background-image", "url(" + backdrop + "?resize=300,450)");
+         	  $(".vjs-poster").css("background-image", "url(" + backdrop + ")");
+			  $(".modal-body").css("background-image", "url(" + backdrop + ")");
+				$('a#aff').each(function() {
+					$(this).attr("href","loading.html");
+				});
+         	  $("h1.h2").html(title+"<span class=\"tiny text-muted\">"+year+"</span>");
+         	  $("#rating").html(rating+"/10");
+         	  $("#user").html("by "+user+" users");
+         	  $(".overview").html(overview);
+         	  $(".release").html(release);
+         	  $(".runtime").html(runtime+" minutes");
+         	  $(".genre").html(genre);
+         	  $(".stars").html(actor);
+         	  $(".director").html(director);
+			  $(".owl-stage").html(sim3);
+         	})
+         })
+      </script>
    </body>
 </html>
