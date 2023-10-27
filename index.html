@@ -13,6 +13,7 @@
       <link rel="stylesheet" href="themes/v1/assets/styles.css">
       <meta name="theme-color" content="#161c23">
    </head>
+   <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/google-play-movies-tv-2038775-1721662.png">
    <body>
       <div class="sign-in-overlay"></div>
       <div class="signin js-signin-form">
@@ -418,6 +419,7 @@
          </div>
       </footer>
 	  <script>
+	  $( document ).ready(function() {
 		var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
         var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
 		var apiKey = "6b4357c41d9c606e4d7ebe2f4a8850ea";
@@ -480,6 +482,7 @@
 				$('.topmovie #'+top+' .small').html(this.vote_average+'/10');
 				$('.topmovie #'+top+' ._title').html(this.title);
 			});
+		});
 		});
 	  </script>
    </body>
