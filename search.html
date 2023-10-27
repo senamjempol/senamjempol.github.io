@@ -229,33 +229,6 @@
 			   <article id="1" class="item col-6 col-md-2"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="type movie">Movie</div><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
 			   <article id="1" class="item col-6 col-md-2"><div class="thumb mb-4"><a href="" rel="bookmark" title=""><div class="_img_holder"><img class="img-fluid rounded" src="themes/v1/assets/no-poster.png" alt="" title=""><div class="type movie">Movie</div><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="" class="_title" rel="bookmark" title="">Title</a></h2></header></div></article>
             </div>
-            <!--<div class="row">
-               <div class="col-12 text-center pagenate">
-                   <nav>
-               <ul class="pagination">
-               
-                           <li class="page-item disabled" aria-disabled="true" aria-label="&lsaquo; Sebelumnya">
-                   <span class="page-link" aria-hidden="true">&lsaquo;</span>
-               </li>
-               
-               
-                           
-               
-               
-                                                                                       <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                                                                                               <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=2">2</a></li>
-                                                                                               <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=3">3</a></li>
-                                                                                               <li class="page-item"><a class="page-link" href="search/<?=$key;?>?page=4">4</a></li>
-                                                                       
-               
-                           <li class="page-item">
-                   <a class="page-link" href="search/<?=$key;?>?page=2" rel="next" aria-label="Berikutnya &rsaquo;">&rsaquo;</a>
-               </li>
-                   </ul>
-               </nav>
-               
-               </div>
-               </div>-->
          </div>
       </section>
       <footer class="footer">
@@ -272,5 +245,25 @@
             </div>
          </div>
       </footer>
+	  <script>
+	  $( document ).ready(function() {
+		var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
+        var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
+		var apiKey = "6b4357c41d9c606e4d7ebe2f4a8850ea";
+        var popURL = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=" + apiKey;
+		var isiPop = '';
+		$.getJSON(popURL, function (popData) {
+			var pop = 0;
+			var isiSearch = '';
+			$(popData.results).each(function(){
+				pop = pop+1;
+				if(1<11){
+					isiSearch = isiSearch+'<article id="'+this.id+'" class="item col-6 col-md-2"><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+posterPaths+this.poster_path+'" alt="'+this.title+'" title="'+this.title+'"><div class="type movie">Movie</div><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article>';
+				}
+			});
+			$('.row').html(isiSearch);
+		});
+	  });
+	  </script>
    </body>
 </html>
