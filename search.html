@@ -250,7 +250,7 @@
 		var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
         var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
 		var apiKey = "6b4357c41d9c606e4d7ebe2f4a8850ea";
-        var popURL = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=" + apiKey;
+        var popURL = "https://api.themoviedb.org/3/search/movie?api_key="+apiKey+"&query=spiderman;
 		var isiPop = '';
 		$.getJSON(popURL, function (popData) {
 			var j = 0;
