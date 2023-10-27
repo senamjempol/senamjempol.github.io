@@ -12,57 +12,6 @@
 	  <script src="themes/v1/assets/scripts.js"></script>
       <link rel="stylesheet" href="themes/v1/assets/styles.css">
       <meta name="theme-color" content="#161c23">
-	  <script>
-		var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
-        var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
-		var apiKey = "6b4357c41d9c606e4d7ebe2f4a8850ea";
-        var popURL = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=" + apiKey;
-		var isiPop = '';
-		$.getJSON(popURL, function (popData) {
-			var pop = 0;
-			$(popData.results).each(function(){
-				pop = pop+1;
-				$('.popular #'+pop+' a').attr('href','play.html?id='+this.id);
-				$('.popular #'+pop+' a').attr('title',this.title);
-				$('.popular #'+pop+' img').attr('src',posterPaths+this.poster_path);
-				$('.popular #'+pop+' img').attr('alt',this.title);
-				$('.popular #'+pop+' img').attr('title',this.title);
-				$('.popular #'+pop+' .small').html(this.vote_average+'/10');
-				$('.popular #'+pop+' ._title').html(this.title);
-			});
-		});
-		var nowURL = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=" + apiKey;
-		var isiNow = '';
-		$.getJSON(nowURL, function (nowData) {
-			var now = 0;
-			$(nowData.results).each(function(){
-				now = now+1;
-				$('.nowplaying #'+now+' a').attr('href','play.html?id='+this.id);
-				$('.nowplaying #'+now+' a').attr('title',this.title);
-				$('.nowplaying #'+now+' img').attr('src',posterPaths+this.poster_path);
-				$('.nowplaying #'+now+' img').attr('alt',this.title);
-				$('.nowplaying #'+now+' img').attr('title',this.title);
-				$('.nowplaying #'+now+' .small').html(this.vote_average+'/10');
-				$('.nowplaying #'+now+' ._title').html(this.title);
-			});
-		});
-		var upURL = "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&api_key=" + apiKey;
-		var isiUp = '';
-		$.getJSON(upURL, function (upData) {
-			$(upData.results).each(function(){
-				isiUp = isiUp+'<article id="'+this.id+'" class="item "><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+posterPaths+this.poster_path+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article>';
-			});
-			$('.upcoming').html(isiUp);
-		});
-		var topURL = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=" + apiKey;
-		var isiTop = '';
-		$.getJSON(topURL, function (topData) {
-			$(topData.results).each(function(){
-				isiTop = isiTop+'<article id="'+this.id+'" class="item "><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+posterPaths+this.poster_path+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article>';
-			});
-			$('.topmovie').html(isiTop);
-		});
-	  </script>
    </head>
    <body>
       <div class="sign-in-overlay"></div>
@@ -444,6 +393,56 @@
             </div>
          </div>
       </footer>
-	  
+	  <script>
+		var posterPaths = "https://image.tmdb.org/t/p/w370_and_h556_bestv2";
+        var backgroundPaths = "http://image.tmdb.org/t/p/w1280";
+		var apiKey = "6b4357c41d9c606e4d7ebe2f4a8850ea";
+        var popURL = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=" + apiKey;
+		var isiPop = '';
+		$.getJSON(popURL, function (popData) {
+			var pop = 0;
+			$(popData.results).each(function(){
+				pop = pop+1;
+				$('.popular #'+pop+' a').attr('href','play.html?id='+this.id);
+				$('.popular #'+pop+' a').attr('title',this.title);
+				$('.popular #'+pop+' img').attr('src',posterPaths+this.poster_path);
+				$('.popular #'+pop+' img').attr('alt',this.title);
+				$('.popular #'+pop+' img').attr('title',this.title);
+				$('.popular #'+pop+' .small').html(this.vote_average+'/10');
+				$('.popular #'+pop+' ._title').html(this.title);
+			});
+		});
+		var nowURL = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=" + apiKey;
+		var isiNow = '';
+		$.getJSON(nowURL, function (nowData) {
+			var now = 0;
+			$(nowData.results).each(function(){
+				now = now+1;
+				$('.nowplaying #'+now+' a').attr('href','play.html?id='+this.id);
+				$('.nowplaying #'+now+' a').attr('title',this.title);
+				$('.nowplaying #'+now+' img').attr('src',posterPaths+this.poster_path);
+				$('.nowplaying #'+now+' img').attr('alt',this.title);
+				$('.nowplaying #'+now+' img').attr('title',this.title);
+				$('.nowplaying #'+now+' .small').html(this.vote_average+'/10');
+				$('.nowplaying #'+now+' ._title').html(this.title);
+			});
+		});
+		var upURL = "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&api_key=" + apiKey;
+		var isiUp = '';
+		$.getJSON(upURL, function (upData) {
+			$(upData.results).each(function(){
+				isiUp = isiUp+'<article id="'+this.id+'" class="item "><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+posterPaths+this.poster_path+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article>';
+			});
+			$('.upcoming').html(isiUp);
+		});
+		var topURL = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=" + apiKey;
+		var isiTop = '';
+		$.getJSON(topURL, function (topData) {
+			$(topData.results).each(function(){
+				isiTop = isiTop+'<article id="'+this.id+'" class="item "><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+posterPaths+this.poster_path+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article>';
+			});
+			$('.topmovie').html(isiTop);
+		});
+	  </script>
    </body>
 </html>
