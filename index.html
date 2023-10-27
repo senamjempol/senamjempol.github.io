@@ -30,7 +30,7 @@
 			$(nowData.results).each(function(){
 				isiNow = isiNow+'<div class="owl-item active" style="width: auto; max-width: 150px; margin-right: 30px;"><article id="'+this.id+'" class="item "><div class="thumb mb-4"><a href="play.html?id='+this.id+'" rel="bookmark" title="'+this.title+'"><div class="_img_holder"><img class="img-fluid rounded" src="'+posterPaths+this.poster_path+'" alt="'+this.title+'" title="'+this.title+'"><div class="_overlay_link"><button class="play-button play-button--small" type="button"></button><div class="rate"><i class="fa fa-star text-warning"></i> <span class="small text-white">'+this.vote_average+'/10</span></div></div></div></a><header class="entry-header"><h2 class="entry-title"><a href="play.html?id='+this.id+'" class="_title" rel="bookmark" title="'+this.title+'">'+this.title+'</a></h2></header></div></article></div>';
 			});
-			//$('.nowplaying .owl-stage').html(isiNow);
+			$('.nowplaying .owl-stage').html(isiNow);
 		});
 		var upURL = "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&api_key=" + apiKey;
 		var isiUp = '';
