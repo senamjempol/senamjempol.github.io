@@ -1,36 +1,5 @@
-<?php
-require_once 'settings.php';
-require_once 'get-browser-language.php';
-session_start();
-if(!isset($_SESSION['lang'])){
-	$lang = get_browser_language();
-	if(strlen($lang) > 2){
-		$lang = substr( $lang, 0, 2 );
-	}
-}else{
-	$lang = $_SESSION['lang'];
-}
-
-$uri = $_SERVER['REQUEST_URI']."/";
-if(preg_match('/\/[a-z]{2}\//i', $uri) == false){
-		$uri = $_SERVER['REQUEST_URI'];
-		header("Location: ".$host."/".$lang.$uri);
-		exit();
-}else{
-	preg_match('/\/([a-z]{2})\//i', $uri, $match);
-	$islang = $match[1];
-	if($islang !== $lang){
-		$uri = $_SERVER['REQUEST_URI'];
-		$to = preg_replace('/\/([a-z]{2})\//i','/'.$lang.'/', $uri);
-		header("Location: ".$host.$to);
-		exit();
-	}
-}
-
-if(file_exists('language/'.$lang.'.php')){ require_once 'language/'.$lang.'.php'; }else{ require_once 'language/en.php'; }
-?>
 <!DOCTYPE html>
-<html lang="<?=$lang;?>">
+<html lang="EN-US">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +10,8 @@ if(file_exists('language/'.$lang.'.php')){ require_once 'language/'.$lang.'.php'
 <script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"WebPage"}</script>
     <script src="//use.fontawesome.com/3db27005e3.js"></script>
     <link href="//use.fontawesome.com/3db27005e3.css" media="all" rel="stylesheet">
-    <link rel="stylesheet" href="<?=$host;?>/themes/v1/assets/styles.css">
-    <script src="<?=$host;?>/themes/v1/assets/scripts.js"></script>
+    <link rel="stylesheet" href="themes/v1/assets/styles.css">
+    <script src="themes/v1/assets/scripts.js"></script>
     <meta name="theme-color" content="#161c23">
     
 </head>
@@ -160,9 +129,9 @@ if(file_exists('language/'.$lang.'.php')){ require_once 'language/'.$lang.'.php'
         </div>
     </div>
 </div>    <nav style="background: black" class="navbar navbar-expand-lg navbar-dark navbar-mopie fixed-top">
-    <a class="navbar-brand" href="<?=$host;?>/<?=$lang;?>">
+    <a class="navbar-brand" href="/">
         <span class="text-light">Go</span><span class="text-danger">Movie</span>
-        <!-- <img width="30" src="<?=$host;?>/themes/v1/20200829-164822.png"> -->
+        <!-- <img width="30" src="themes/v1/20200829-164822.png"> -->
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
         aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
@@ -234,7 +203,7 @@ if(file_exists('language/'.$lang.'.php')){ require_once 'language/'.$lang.'.php'
             </li>
         </ul>
         <ul class="navbar-nav">
-            <form class="input-group my-2 my-md-0 mr-md-3 bg-faded" action="<?=$host;?>/<?=$lang;?>" method="GET">
+            <form class="input-group my-2 my-md-0 mr-md-3 bg-faded" action="search.html" method="GET">
                 <input type="text" class="form-control" name="s" placeholder="Search..." aria-label="Search...">
                 <div class="input-group-append">
                     <button class="btn btn-search focus-no-sh" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -304,18 +273,6 @@ if(file_exists('language/'.$lang.'.php')){ require_once 'language/'.$lang.'.php'
             </div>
         </div>
     </footer>
-<!-- Histats.com  (div with counter) --><div id='histats_counter'></div>
-<script type="text/javascript">var _Hasync= _Hasync|| [];
-_Hasync.push(['Histats.start', '1,<?php echo $histats_hidden_code;?>,4,0,0,0,00010000']);
-_Hasync.push(['Histats.fasi', '1']);
-_Hasync.push(['Histats.track_hits', '']);
-(function() {
-var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-hs.src = ('//s10.histats.com/js15_as.js');
-(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-})();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?<?=$histats_hidden_code;?>&101" alt="free page hit counter" border="0"></a></noscript>
-<!-- Histats.com  (div with counter) -->
     </body>
 
 </html>
