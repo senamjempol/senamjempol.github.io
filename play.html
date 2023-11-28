@@ -343,7 +343,7 @@
       <section class="container">
          <div class="row">
             <div class="col-12 mb-4">
-               <h3 class="text-success h4">Movie Similars</h3>
+               <h3 class="text-success h4">Movie Recommendations</h3>
             </div>
          </div>
          
@@ -431,7 +431,7 @@
          	var infoURL =
          	  "https://api.themoviedb.org/3/movie/" +
          	  id +
-         	  "?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea&append_to_response=casts,similar";
+         	  "?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea&append_to_response=casts,recommendations";
          	  
          	$.getJSON(infoURL, function (data) {
          		var release = data.release_date;
