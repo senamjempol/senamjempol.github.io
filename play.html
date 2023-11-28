@@ -801,7 +801,10 @@
 		 var ref = document.referrer;
 		 ref = ref.test(/blogspot/g);
 		 if(ref == true){
-			id = "tt"+id;
+			var uu = "https://api.themoviedb.org/3/movie/tt"+id+"?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea";
+			$.getJSON(uu, function (dt) {
+				id = dt.id;
+			});
 		 }
          if(id === '872585'){
          $('#play-video_html5_api').attr('src','themes/v1/assets/Oppenheimer.mp4');
