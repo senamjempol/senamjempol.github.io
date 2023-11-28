@@ -807,7 +807,7 @@
          	  "https://api.themoviedb.org/3/movie/" +
          	  id +
          	  "?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea&append_to_response=casts,recommendations";
-         	  
+         	  alert(infoURL);
          	$.getJSON(infoURL, function (data) {
          		var release = data.release_date;
          		var runtime = data.runtime;
