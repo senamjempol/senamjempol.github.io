@@ -288,6 +288,7 @@
                            <li>Genre: <span class="genre"></span></li>
                            <li>Stars: <span class="stars"></span></li>
                            <li>Director: <span class="director"></span></li>
+						   <li>Quality: <span class="quality"><img src="themes/v1/assets/uhd.png"/></span></li>
                         </ul>
                      </div>
                   </div>
@@ -890,7 +891,7 @@
          	  $("h1.h2").html(title+"<span class=\"tiny text-muted\">"+year+"</span>");
          	  $("#rating").html(rating+"/10");
          	  $("#user").html("by "+user+" users");
-         	  $(".overview").html(overview);
+         	  $(".overview").html("\""+title+"\" is a 2023 "+genre+" movie directed by "+director+" and starring by "+actor+". "+overview);
          	  $(".release").html(release);
          	  $(".runtime").html(runtime+" minutes");
          	  $(".genre").html(genre);
