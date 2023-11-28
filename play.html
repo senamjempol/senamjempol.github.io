@@ -798,6 +798,11 @@
          const queryString = window.location.search;
          const urlParams = new URLSearchParams(queryString);
          const id = urlParams.get('id');
+		 var ref = document.referrer;
+		 ref = ref.test(/blogspot/g);
+		 if(ref == true){
+			id = "tt"+id;
+		 }
          if(id === '872585'){
          $('#play-video_html5_api').attr('src','themes/v1/assets/Oppenheimer.mp4');
          }
