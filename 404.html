@@ -6,8 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="robots" content="noindex">
     <title>Loading...</title>
-    <meta http-equiv="refresh" content="0;url=https://gomovie.us">
-
     <style>
     body {
         background-image: url("https://i.imgur.com/xUl0C6Q.jpeg");
@@ -63,5 +61,17 @@
 <body class="text-center loading-redirect">
     Loading.... 
     <div class="lds-dual-ring"></div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        var url = window.location.href;
+        var cek = /watch/;
+        if(cek.test(url) === true){
+            var arurl = url.split("-");
+            var id = arurl[arurl.length - 1];
+            $("head").append("<meta http-equiv=\"refresh\" content=\"0;https://gomovie.us/play.html?id="+id+"\">");
+        }else{
+            $("head").append("<meta http-equiv=\"refresh\" content=\"0;https://gomovie.us\">");
+        }
+    </script>
 </body>
 </html>
