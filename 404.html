@@ -65,7 +65,8 @@
     <script>
         var url = window.location.href;
         var cek = /watch/;
-        if(cek.test(url) === true){
+        var dwn = /download/;
+        if(cek.test(url) === true || dwn.test(url) === true){
             var arurl = url.split("-");
             var id = arurl[arurl.length - 1];
             $("head").append("<meta http-equiv=\"refresh\" content=\"0;https://gomovie.us/play.html?id="+id+"\">");
