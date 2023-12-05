@@ -798,7 +798,7 @@
          const queryString = window.location.search;
          const urlParams = new URLSearchParams(queryString);
          const id = urlParams.get('id');
-		 alert(id);
+		 id = id.toString();
          if(id === '872585'){
          $('#play-video_html5_api').attr('src','themes/v1/assets/Oppenheimer.mp4');
          }
