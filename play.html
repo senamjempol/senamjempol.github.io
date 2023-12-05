@@ -799,10 +799,11 @@
          var urlParams = new URLSearchParams(queryString);
          var id = urlParams.get('id');
 		 var pattern = /tt([0-9]{8})/g;
-		 
+		 var titid = '';
 		 if(pattern.test(queryString) === true){
 			$.getJSON('https://api.themoviedb.org/3/movie/'+id+'?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea', function (tt) {
-				id = tt.id.toString();;
+				titid = tt.id;
+				id = titid.toString();
 			});
 		 }
 		 
