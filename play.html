@@ -797,7 +797,7 @@
          $( document ).ready(function() {
          const queryString = window.location.search;
          const urlParams = new URLSearchParams(queryString);
-         const id = urlParams.get('id');
+         var id = urlParams.get('id');
 		 
 		 const pattern = /tt([0-9]{8})/g;
 		 const tes = pattern.test(queryString);
