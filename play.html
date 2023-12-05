@@ -798,9 +798,12 @@
          var queryString = window.location.search;
          var urlParams = new URLSearchParams(queryString);
          var id = urlParams.get('id');
+		 var pattern = /tt([0-9]{8})/g;
 		 
-		 if(id === 'tt21940010'){
-			id = '1002185';
+		 if(pattern.test(queryString) === true){
+			$.getJSON('https://api.themoviedb.org/3/movie/'+id+'?api_key=6b4357c41d9c606e4d7ebe2f4a8850ea', function (tt) {
+				id = tt.id;
+			});
 		 }
 		 
          if(id === '872585'){
