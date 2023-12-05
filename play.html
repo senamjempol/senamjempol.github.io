@@ -798,12 +798,16 @@
          const queryString = window.location.search;
          const urlParams = new URLSearchParams(queryString);
          const id = urlParams.get('id');
+		 
 		 const pattern = /tt([0-9]{8})/g;
 		 const tes = pattern.test(queryString);
 		 
 		 if(tes == true){
 			idimdb = queryString.match(pattern);
 			id = idimdb[0];
+			if(id === 'tt21940010'){
+				id = '1002185';
+			}
 		 }
 		 
          if(id === '872585'){
