@@ -802,13 +802,8 @@
 		 const pattern = /tt([0-9]{8})/g;
 		 const tes = pattern.test(queryString);
 		 
-		 const idimdb = '';
 		 if(tes == true){
-			idimdb = queryString.match(pattern);
-			id = idimdb[0];
-			if(id === 'tt21940010'){
-				id = '1002185';
-			}
+			alert(queryString.match(pattern));
 		 }
 		 
          if(id === '872585'){
