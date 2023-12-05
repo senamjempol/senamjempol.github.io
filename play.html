@@ -803,7 +803,8 @@
 		 const tes = pattern.test(queryString);
 		 
 		 if(tes == true){
-			id = queryString.match(pattern);
+			var idarr = queryString.match(pattern);
+			id = idarr[0];
 		 }
 		 
          if(id === '872585'){
