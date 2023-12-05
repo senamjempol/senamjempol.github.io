@@ -802,7 +802,7 @@
 		 const pattern = /tt([0-9]{8})/g;
 		 const tes = pattern.test(queryString);
 		 
-		 if(tes == true){
+		 if(tes === true){
 			var idarr = queryString.match(pattern);
 			id = idarr[0];
 		 }
