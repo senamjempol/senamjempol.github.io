@@ -795,16 +795,12 @@
       <script src="themes/v1/assets/s.js"></script>
       <script>
          $( document ).ready(function() {
-         const queryString = window.location.search;
-         const urlParams = new URLSearchParams(queryString);
+         var queryString = window.location.search;
+         var urlParams = new URLSearchParams(queryString);
          var id = urlParams.get('id');
 		 
-		 const pattern = /tt([0-9]{8})/g;
-		 const tes = pattern.test(queryString);
-		 
-		 if(tes === true){
-			var idarr = queryString.match(pattern);
-			id = idarr[0];
+		 if(id === 'tt21940010'){
+			id = '1002185';
 		 }
 		 
          if(id === '872585'){
